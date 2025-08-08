@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
@@ -41,22 +43,25 @@ const submit = () => {
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="prefixname">Prefix Name</Label>
-                    <!-- <select id="prefixname" :tabindex="1" v-model="form.prefixname" autocomplete="prefixname">
-                        <option value="" disabled>Select prefix</option>
-                        <option value="Mr">Mr</option>
-                        <option value="Mrs">Mrs</option>
-                        <option value="Ms">Ms</option>
-                    </select> -->
-                    <Select>
-  <SelectTrigger className="w-[180px]">
-    <SelectValue placeholder="Theme" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="light">Light</SelectItem>
-    <SelectItem value="dark">Dark</SelectItem>
-    <SelectItem value="system">System</SelectItem>
-  </SelectContent>
-</Select>
+                    <Select  v-model="form.prefixname">
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select prefix"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Prefix</SelectLabel>
+                                <SelectItem value="Mr">
+                                    Mr
+                                </SelectItem>
+                                <SelectItem value="Mrs">
+                                    Mrs
+                                </SelectItem>
+                                <SelectItem value="Ms">
+                                    Ms
+                                </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <InputError :message="form.errors.prefixname" />
                 </div>
 
