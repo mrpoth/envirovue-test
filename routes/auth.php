@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+    Route::get('/users/trashed', [RegisteredUserController::class, 'trashed']);
+
     Route::resource('users', RegisteredUserController::class)->except(['create, store']);
 
 });

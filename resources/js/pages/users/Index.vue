@@ -7,7 +7,7 @@ defineProps({
     users: {
         type: Array,
         required: true,
-    },
+    }
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -24,10 +24,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-            <Link v-for="user in users" :key="user.id" :href="`/users/${user.id}`"
-                class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent">
-            {{ user.full_name }}
-            </Link>
+            <div class="flex" v-for="user in users" :key="user.id">
+                <Link :href="`/users/${user.id}`"
+                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent">
+                {{ user.full_name }}
+                </Link>
+                <Link method="delete" as="button" :href="`/users/${user.id}`"
+                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent bg-red-600">
+                Delete
+                </Link>
+            </div>
         </div>
     </AppLayout>
 </template>

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -28,6 +29,23 @@ class RegisteredUserController extends Controller
             'user' => User::find($request->user)
         ]);
     }
+
+    public function destroy(Request $request)
+    {
+        $user = User::findOrFail($request->user);
+
+        $user->delete();
+
+        return back();
+    }
+
+    public function trashed(): Response
+    {
+        return Inertia::render('users/Trashed', [
+            'users' => User::onlyTrashed()->get()
+        ]);
+    }
+
     /**
      * Show the registration page.
      */
