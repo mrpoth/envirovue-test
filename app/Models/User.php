@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +37,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    
 
     /**
      * Get the attributes that should be cast.
@@ -47,5 +50,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected $appends = ['full_name', 'middle_initial'];
+
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['firstname'] . ' ' . $this->middleInitial . ' ' . $attributes['lastname'],
+        );
+    }
+
+    protected function middleInitial(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => ucfirst($attributes['middlename'][0]) . '.',
+        );
     }
 }

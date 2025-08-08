@@ -4,8 +4,8 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
-    users: {
-        type: Array,
+    user: {
+        type: Object,
         required: true,
     },
 });
@@ -14,6 +14,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Users',
         href: '/users',
+    },
+    {
+        title: 'User',
+        href: '/user',
     },
 ];
 </script>
@@ -24,10 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-            <Link v-for="user in users" :key="user.id" :href="`/users/${user.id}`"
-                class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent">
-            {{ user.full_name }}
-            </Link>
+            <p>{{ user.full_name }}</p>
         </div>
     </AppLayout>
 </template>

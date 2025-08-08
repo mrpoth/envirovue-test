@@ -18,7 +18,15 @@ class RegisteredUserController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('users/Index');
+        return Inertia::render('users/Index', [
+            'users' => User::all()
+        ]);
+    }
+    public function show(Request $request): Response
+    {
+        return Inertia::render('users/Show', [
+            'user' => User::find($request->user)
+        ]);
     }
     /**
      * Show the registration page.
