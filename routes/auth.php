@@ -55,8 +55,4 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-        Route::softDeletes('users', RegisteredUserController::class);
-
-    Route::resource('users', RegisteredUserController::class)->except(['create, store']);
-
 });
