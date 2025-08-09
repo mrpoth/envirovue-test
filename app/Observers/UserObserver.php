@@ -35,8 +35,8 @@ class UserObserver
         $gender = $genderMap[$user->prefixname];
 
         $details = [
-            ['key' => DetailKey::FullName->value, 'value' => $user->full_name],
-            ['key' => DetailKey::MiddleInitial->value, 'value' => $user->middle_initial],
+            ['key' => DetailKey::FullName->value, 'value' => $user->getAttribute('full_name')],
+            ['key' => DetailKey::MiddleInitial->value, 'value' => $user->getAttribute('middle_initial')],
             ['key' => DetailKey::Gender->value, 'value' => $gender],
         ];
 

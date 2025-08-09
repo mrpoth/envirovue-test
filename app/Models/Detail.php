@@ -11,7 +11,7 @@ class Detail extends Model
     protected $fillable = [
         'key',
         'value',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [

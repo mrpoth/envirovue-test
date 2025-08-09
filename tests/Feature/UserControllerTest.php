@@ -18,7 +18,7 @@ test('authenticated users can see the users index', function () {
 
     $response = $this->get((route('users.index')));
     $response->assertStatus(200);
-    $response->assertInertia(fn(Assert $page) => $page
+    $response->assertInertia(fn (Assert $page) => $page
         ->component('users/Index')
         ->has('users', count(User::all())));
 });
@@ -30,11 +30,11 @@ test('authenticated users can see a single user', function () {
     $response = $this->get((route('users.show', $user)));
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Show')
             ->has(
                 'user',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('email', $user->email)
                     ->etc()
             )
@@ -49,11 +49,11 @@ test('authenticated users can see the edit user page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Edit')
             ->has(
                 'user',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('id', $user->id)
                     ->where('email', $user->email)
                     ->etc()
@@ -107,11 +107,11 @@ test('authenticated users can see trashed users', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Trashed')
             ->has(
                 'users',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('0.id', $trashedUser->id)
                     ->etc()
             )
@@ -154,13 +154,13 @@ test('additional user details are saved automatically after user is created or u
     $this->assertDatabaseHas('details', [
         'user_id' => $user->id,
         'key' => DetailKey::FullName,
-        'value' => $user->full_name
+        'value' => $user->full_name,
     ]);
 
     $user->update(['firstname' => 'New Name']);
     $this->assertDatabaseHas('details', [
         'user_id' => $user->id,
         'key' => DetailKey::FullName,
-        'value' => $user->full_name
+        'value' => $user->full_name,
     ]);
 });
