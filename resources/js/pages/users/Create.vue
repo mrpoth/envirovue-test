@@ -15,6 +15,7 @@ import {
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { BreadcrumbItem } from '@/types';
 
 const form = useForm({
     prefixname: '',
@@ -31,6 +32,17 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Users',
+        href: '/users',
+    },
+    {
+        title: 'User',
+        href: `/user/create`,
+    },
+];
 </script>
 
 <template>

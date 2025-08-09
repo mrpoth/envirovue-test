@@ -21,6 +21,16 @@ const page = usePage();
                         <span>{{ item.title }}</span>
                     </Link>
                 </SidebarMenuButton>
+                <div v-if="item.children && page.url.startsWith(item.href)" class="ml-4 mt-2">
+                    <Link 
+                        v-for="child in item.children" 
+                        :key="child.title" 
+                        :href="child.href" 
+                        class="block text-sm text-gray-300 hover:text-gray-800"
+                    >
+                        {{ child.title }}
+                    </Link>
+                </div>
             </SidebarMenuItem>
         </SidebarMenu>
     </SidebarGroup>
