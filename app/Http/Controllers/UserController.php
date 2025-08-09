@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Response;
 
 class UserController extends Controller
@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('users/Index', [
-            'users' => User::all()
+            'users' => User::all(),
         ]);
     }
 
@@ -24,25 +24,25 @@ class UserController extends Controller
         return Inertia::render('users/Create');
     }
 
-
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
         User::create($validatedData);
+
         return to_route('users.index');
     }
 
     public function show(Request $request): Response
     {
         return Inertia::render('users/Show', [
-            'user' => User::find($request->user)
+            'user' => User::find($request->user),
         ]);
     }
 
     public function edit(Request $request): Response
     {
         return Inertia::render('users/Edit', [
-            'user' => User::find($request->user)
+            'user' => User::find($request->user),
         ]);
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
     public function trashed(): Response
     {
         return Inertia::render('users/Trashed', [
-            'users' => User::onlyTrashed()->get()
+            'users' => User::onlyTrashed()->get(),
         ]);
     }
 

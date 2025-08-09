@@ -38,7 +38,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
 
     /**
      * Get the attributes that should be cast.
@@ -55,18 +54,17 @@ class User extends Authenticatable
 
     protected $appends = ['full_name', 'middle_initial'];
 
-
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $attributes['firstname'] . ' ' . $this->middleInitial . ' ' . $attributes['lastname'],
+            get: fn (mixed $value, array $attributes) => $attributes['firstname'].' '.($this->getAttribute('middleInitial') ?? '').' '.$attributes['lastname'],
         );
     }
 
     protected function middleInitial(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => isset($attributes['middlename']) ? ucfirst($attributes['middlename'][0]) . '.' : null,
+            get: fn (mixed $value, array $attributes) => isset($attributes['middlename']) ? ucfirst($attributes['middlename'][0]).'.' : null,
         );
     }
 }
