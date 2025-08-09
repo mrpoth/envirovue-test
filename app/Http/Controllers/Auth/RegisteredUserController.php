@@ -30,7 +30,7 @@ class RegisteredUserController extends Controller
         ]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         $user = User::findOrFail($request->user);
 
@@ -44,6 +44,22 @@ class RegisteredUserController extends Controller
         return Inertia::render('users/Trashed', [
             'users' => User::onlyTrashed()->get()
         ]);
+    }
+
+    public function restore(Request $request): RedirectResponse
+    {
+        $user = User::withTrashed()->findOrFail($request->user);
+
+        $user->restore();
+
+        return back();
+    }
+
+    public function delete(Request $request): RedirectResponse
+    {
+        User::forceDestroy($request->user);
+
+        return back();
     }
 
     /**

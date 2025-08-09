@@ -12,6 +12,10 @@ defineProps({
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
+        title: 'Users',
+        href: '/users',
+    },
+    {
         title: 'Restore Users',
         href: '/users/trashed',
     },
@@ -28,9 +32,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <span>
                     {{ user.full_name }}
                 </span>
-                <Link method="post" as="button" :href="`/users/${user.id}`"
+                <Link method="patch" as="button" :href="`/users/${user.id}/restore`"
                     class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-green-900 bg-green-500">
                 Restore
+                </Link>
+                <Link method="delete" as="button" :href="`/users/${user.id}/delete`"
+                    class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-green-900 bg-red-600">
+                Delete permanently
                 </Link>
             </div>
         </div>
