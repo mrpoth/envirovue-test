@@ -11,6 +11,11 @@ beforeEach(function () {
     $this->actingAs(User::factory()->create());
 });
 
+test('guests are redirected to the login page', function () {
+    $response = $this->get('/users');
+    $response->assertRedirect('/login');
+});
+
 test('authenticated users can see the users index', function () {
     $user = User::factory()->create();
     $users = User::factory(10)->create();

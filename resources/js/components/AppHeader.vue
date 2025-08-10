@@ -34,11 +34,6 @@ const activeItemStyles = computed(
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-    {
         title: 'Users',
         href: '/users',
         icon: LayoutGrid,
@@ -107,7 +102,7 @@ const rightNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="route('dashboard')" class="flex items-center gap-x-2">
+                <Link :href="route('users.index')" class="flex items-center gap-x-2">
                     <AppLogo />
                 </Link>
 
