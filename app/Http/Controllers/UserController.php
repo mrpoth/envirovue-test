@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('users/Index', [
-            'users' => User::all(),
+            'users' => User::all()->except(auth()->user()->id),
         ]);
     }
 
