@@ -95,19 +95,19 @@ const submit = () => {
 
                 <div class="grid gap-2">
                     <Label for="password">Password</Label>
-                    <Input id="password" type="password" required :tabindex="3" autocomplete="new-password"
+                    <Input id="password" type="password" required :tabindex="6" autocomplete="new-password"
                         v-model="form.password" placeholder="Password" />
                     <InputError :message="form.errors.password" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="password_confirmation">Confirm password</Label>
-                    <Input id="password_confirmation" type="password" required :tabindex="4" autocomplete="new-password"
+                    <Input id="password_confirmation" type="password" required :tabindex="7" autocomplete="new-password"
                         v-model="form.password_confirmation" placeholder="Confirm password" />
                     <InputError :message="form.errors.password_confirmation" />
                 </div>
 
-                <Button type="submit" class="mt-2 w-full" tabindex="5" :disabled="form.processing">
+                <Button type="submit" class="mt-2 w-full" :tabindex="8" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
                     Create account
                 </Button>
@@ -115,7 +115,7 @@ const submit = () => {
 
             <div class="text-center text-sm text-muted-foreground">
                 Already have an account?
-                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="6">Log in</TextLink>
+                <TextLink :href="route('login')" class="underline underline-offset-4" :tabindex="9">Log in</TextLink>
             </div>
         </form>
     </AuthBase>
