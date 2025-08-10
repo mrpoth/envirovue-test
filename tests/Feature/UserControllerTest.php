@@ -14,11 +14,11 @@ beforeEach(function () {
 
 test('authenticated users can see the users index', function () {
     $newlyCreatedUsersCount = 10;
-    $this->users = User::factory($newlyCreatedUsersCount)->create();
+    $users = User::factory($newlyCreatedUsersCount)->create();
 
     $response = $this->get((route('users.index')));
     $response->assertStatus(200);
-    $response->assertInertia(fn (Assert $page) => $page
+    $response->assertInertia(fn(Assert $page) => $page
         ->component('users/Index')
         ->has('users', $newlyCreatedUsersCount));
 });
@@ -28,16 +28,60 @@ test('authenticated users can see a single user', function () {
     $response = $this->get((route('users.show', $this->user)));
     $response->assertStatus(200);
     $response->assertInertia(
-        fn (Assert $page) => $page
+        fn(Assert $page) => $page
             ->component('users/Show')
             ->has(
                 'user',
-                fn (Assert $page) => $page
+                fn(Assert $page) => $page
                     ->where('email', $this->user->email)
                     ->etc()
             )
     );
 });
+
+test('guest cannot access users index', function () {
+    auth()->logout();
+    $response = $this->get(route('users.index'));
+    $response->assertRedirect(route('login')); // or 302 redirect to login
+});
+
+test('guest cannot view single user', function () {
+    auth()->logout();
+    $response = $this->get(route('users.show', $this->user));
+    $response->assertRedirect(route('login'));
+});
+
+
+test('authenticated users can create a single user', function () {
+    $userData =          [
+        'prefixname' => 'Mr',
+        'firstname' => 'Test',
+        'middlename' => 'Tester',
+        'lastname' => 'Testering',
+        'email' => 'test@test.com',
+        'email_verified_at' => now(),
+        'password' => 'tester123',
+    ];
+
+    $response = $this->post(route('users.store'), $userData);
+
+    $response->assertStatus(302);
+    $response->assertRedirect();
+
+    $this->assertDatabaseHas('users', [
+        'prefixname' => 'Mr',
+        'firstname' => 'Test',
+        'middlename' => 'Tester',
+        'lastname' => 'Testering',
+        'email' => 'test@test.com',
+    ]);
+});
+
+test('user creation fails with missing required fields', function () {
+    $response = $this->post(route('users.store'), []);
+    $response->assertSessionHasErrors(['firstname', 'lastname', 'email', 'password']);
+});
+
 
 test('authenticated users can see the edit user page', function () {
 
@@ -45,11 +89,11 @@ test('authenticated users can see the edit user page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn (Assert $page) => $page
+        fn(Assert $page) => $page
             ->component('users/Edit')
             ->has(
                 'user',
-                fn (Assert $page) => $page
+                fn(Assert $page) => $page
                     ->where('id', $this->user->id)
                     ->where('email', $this->user->email)
                     ->etc()
@@ -78,6 +122,14 @@ test('authenticated users can update a user', function () {
     ]);
 });
 
+test('user update fails with missing data', function () {
+    $response = $this->put(route('users.update', $this->user), [
+        'firstname' => 'UpdatedFirstName',
+    ]);
+    $response->assertSessionHasErrors();
+});
+
+
 test('authenticated users can soft delete a user', function () {
 
     $response = $this->delete(route('users.destroy', ['user' => $this->user->id]));
@@ -89,21 +141,18 @@ test('authenticated users can soft delete a user', function () {
 });
 
 test('authenticated users can see trashed users', function () {
-    $this->user = User::factory()->create();
     $trashedUser = User::factory()->create();
     $trashedUser->delete();
-
-    $this->actingAs($this->user);
 
     $response = $this->get(route('users.trashed'));
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn (Assert $page) => $page
+        fn(Assert $page) => $page
             ->component('users/Trashed')
             ->has(
                 'users',
-                fn (Assert $page) => $page
+                fn(Assert $page) => $page
                     ->where('0.id', $trashedUser->id)
                     ->etc()
             )
@@ -111,11 +160,7 @@ test('authenticated users can see trashed users', function () {
 });
 
 test('authenticated users can restore a trashed user', function () {
-    $this->user = User::factory()->create();
-    $trashedUser = User::factory()->create();
-    $trashedUser->delete();
-
-    $this->actingAs($this->user);
+    $trashedUser = User::factory()->trashed()->create();
 
     $response = $this->patch(route('users.restore', ['user' => $trashedUser->id]));
 
@@ -139,18 +184,32 @@ test('authenticated users can permanently delete a user', function () {
 });
 
 test('additional user details are saved automatically after user is created or updated', function () {
-    $this->user = User::factory()->create();
+
+    $userData = [
+        'prefixname' => 'Mr',
+        'firstname' => 'Test',
+        'middlename' => 'Tester',
+        'lastname' => 'Testering',
+        'email' => 'test@test.com',
+        'email_verified_at' => now(),
+        'password' => 'tester123',
+    ];
+
+    $response = $this->post(route('users.store'), $userData);
+    $response->assertStatus(302);
+
+    $user = User::where('email', 'test@test.com')->first();
 
     $this->assertDatabaseHas('details', [
-        'user_id' => $this->user->id,
+        'user_id' => $user->id,
         'key' => DetailKey::FullName,
-        'value' => $this->user->full_name,
+        'value' => $user->full_name,
     ]);
 
-    $this->user->update(['firstname' => 'New Name']);
+    $user->update(['firstname' => 'New Name']);
     $this->assertDatabaseHas('details', [
-        'user_id' => $this->user->id,
+        'user_id' => $user->id,
         'key' => DetailKey::FullName,
-        'value' => $this->user->full_name,
+        'value' => $user->full_name,
     ]);
 });
