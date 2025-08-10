@@ -9,7 +9,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware('auth')->group(function () {
-    Route::softDeletes('users', UserController::class);
+    Route::softDeletes('users', UserController::class, 'user');
     Route::resource('users', UserController::class)->except(['create, store']);
 });
 
