@@ -39,7 +39,7 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'prefixname.enum' => 'Prefix name must be one of: ' . implode(', ', UserTitles::values()) . '.',
+            'prefixname.enum' => 'Prefix name must be one of: '.implode(', ', UserTitles::values()).'.',
             'firstname.required' => 'First name is required.',
             'lastname.required' => 'Last name is required.',
             'email.required' => 'Email is required.',

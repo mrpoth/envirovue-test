@@ -12,7 +12,6 @@ class UpdateUserRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-
     public function authorize(): bool
     {
         return auth()->check();
@@ -46,7 +45,7 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'prefixname.enum' => 'Prefix name must be one of: ' . implode(', ', UserTitles::values()) . '.',
+            'prefixname.enum' => 'Prefix name must be one of: '.implode(', ', UserTitles::values()).'.',
             'firstname.required' => 'First name is required.',
             'lastname.required' => 'Last name is required.',
             'email.required' => 'Email is required.',

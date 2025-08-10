@@ -18,7 +18,7 @@ test('authenticated users can see the users index', function () {
 
     $response = $this->get((route('users.index')));
     $response->assertStatus(200);
-    $response->assertInertia(fn(Assert $page) => $page
+    $response->assertInertia(fn (Assert $page) => $page
         ->component('users/Index')
         ->has('users', $newlyCreatedUsersCount));
 });
@@ -28,11 +28,11 @@ test('authenticated users can see a single user', function () {
     $response = $this->get((route('users.show', $this->user)));
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Show')
             ->has(
                 'user',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('email', $this->user->email)
                     ->etc()
             )
@@ -51,9 +51,8 @@ test('guest cannot view single user', function () {
     $response->assertRedirect(route('login'));
 });
 
-
 test('authenticated users can create a single user', function () {
-    $userData =          [
+    $userData = [
         'prefixname' => 'Mr',
         'firstname' => 'Test',
         'middlename' => 'Tester',
@@ -82,18 +81,17 @@ test('user creation fails with missing required fields', function () {
     $response->assertSessionHasErrors(['firstname', 'lastname', 'email', 'password']);
 });
 
-
 test('authenticated users can see the edit user page', function () {
 
     $response = $this->get(route('users.edit', ['user' => $this->user->id]));
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Edit')
             ->has(
                 'user',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('id', $this->user->id)
                     ->where('email', $this->user->email)
                     ->etc()
@@ -129,7 +127,6 @@ test('user update fails with missing data', function () {
     $response->assertSessionHasErrors();
 });
 
-
 test('authenticated users can soft delete a user', function () {
 
     $response = $this->delete(route('users.destroy', ['user' => $this->user->id]));
@@ -148,11 +145,11 @@ test('authenticated users can see trashed users', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn(Assert $page) => $page
+        fn (Assert $page) => $page
             ->component('users/Trashed')
             ->has(
                 'users',
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->where('0.id', $trashedUser->id)
                     ->etc()
             )

@@ -2,7 +2,7 @@
 
 This repo contains an assessment for a Senior Laravel Developer as outlined in [this Notion document](https://www.notion.so/Assessment-for-Senior-Laravel-Developer-24864f24b84c80f5968fc7ec8604126c).
 
-To run it, you will need PHP, Composer, andl either Node and NPM or Bun. I believe we discussed that Envirovue uses Valet but as I didn't have access to a Mac, I couldn't test the setup environment there. However, these are the versions I used in case it helps:
+To run it, you will need PHP, Composer, and either Node and NPM or Bun. I believe we discussed that Envirovue uses Valet but as I didn't have access to a Mac, I couldn't test the setup environment there. However, these are the versions I used in case it helps:
 
 ```
 PHP 8.4
@@ -30,3 +30,5 @@ In the interest of time, I have used the starter kit's existing layouts (with sl
 In the same vein, other concessions have been made. For instance, the users.index route returns _all_ users. In a production environment, it would instead use pagination or some other similar type of filtering.
 
 Moreover, authorisation policies and user roles have not been created so any authentication user can complete any of the actions defined in the UserController route, such as deleting and editing users.
+
+This also means that while the authenticated user is excluded from the list of users in the index, they could still access the pages to edit/delete themselves. 
