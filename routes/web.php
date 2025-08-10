@@ -9,8 +9,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware('auth')->group(function () {
-Route::softDeletes('users', UserController::class);
-Route::resource('users', UserController::class)->except(['create, store']);
+    Route::softDeletes('users', UserController::class);
+    Route::resource('users', UserController::class)->except(['create, store']);
 });
 
 require __DIR__.'/settings.php';
