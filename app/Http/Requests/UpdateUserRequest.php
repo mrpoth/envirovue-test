@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserTitles;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -11,9 +12,10 @@ class UpdateUserRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +24,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'prefixname' => ['nullable', 'string', 'max:255', 'in:Mr,Mrs,Ms'],
+            'prefixname' => ['nullable', 'string', 'max:255', Rule::enum(UserTitles::class)],
             'firstname' => ['required', 'string', 'max:255'],
             'middlename' => ['nullable', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
@@ -44,14 +46,12 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'prefixname.in' => 'Prefix name must be either Mr, Mrs, or Ms.',
+            'prefixname.enum' => 'Prefix name must be one of: ' . implode(', ', UserTitles::values()) . '.',
             'firstname.required' => 'First name is required.',
             'lastname.required' => 'Last name is required.',
             'email.required' => 'Email is required.',
             'email.email' => 'Email must be a valid email address.',
             'email.unique' => 'This email is already in use.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least :min characters long.',
         ];
     }
 }

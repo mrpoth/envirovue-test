@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\DetailKey;
+use App\Enums\UserTitles;
 use App\Models\Detail;
 use App\Models\User;
 
@@ -27,9 +28,9 @@ class UserObserver
     private function handleSavedUser(User $user)
     {
         $genderMap = [
-            'Mr' => 'Male',
-            'Mrs' => 'Female',
-            'Ms' => 'Female',
+            UserTitles::Mr->value => 'Male',
+            UserTitles::Mrs->value => 'Female',
+            UserTitles::Ms->value => 'Female',
         ];
 
         $gender = $genderMap[$user->prefixname];

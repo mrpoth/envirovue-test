@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserTitles;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Change to your authorization logic if needed
+        return true;
     }
 
     /**
@@ -20,7 +22,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'prefixname' => ['nullable', 'string', 'max:255', 'in:Mr,Mrs,Ms'],
+            'prefixname' => ['nullable', 'string', 'max:255', Rule::enum(UserTitles::class)],
             'firstname' => ['required', 'string', 'max:255'],
             'middlename' => ['nullable', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
@@ -37,7 +39,7 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'prefixname.in' => 'Prefix name must be either Mr, Mrs, or Ms.',
+            'prefixname.enum' => 'Prefix name must be one of: ' . implode(', ', UserTitles::values()) . '.',
             'firstname.required' => 'First name is required.',
             'lastname.required' => 'Last name is required.',
             'email.required' => 'Email is required.',
